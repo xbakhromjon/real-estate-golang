@@ -31,11 +31,11 @@ type UserResponse struct {
 	Flm       string
 	Phone     string
 	CoinCount int32
-	Status    int64
+	Status    UserStatus
 }
 
 type UserUseCase interface {
-	Create(request UserCreateRequest) (int64, error)
+	Create(request *UserCreateRequest) (int64, error)
 	Update(request UserUpdateRequest) error
 	GetOne(ID int64) (UserResponse, error)
 	Block(ID int64) error
