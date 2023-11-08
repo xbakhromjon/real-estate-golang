@@ -65,4 +65,5 @@ func (uc *UserController) ChangeStatus(context *gin.Context) {
 		return
 	}
 	fmt.Printf("id: %s status: %s", id, status)
+
 }

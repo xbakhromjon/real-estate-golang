@@ -1,5 +1,7 @@
 package domain
 
+import "gorm.io/gorm"
+
 type UserStatus int64
 
 const (
@@ -9,8 +11,8 @@ const (
 )
 
 type User struct {
-	ID        int64
-	Flm       string
+	gorm.Model
+	Flm       string `gorm:"not null"`
 	Phone     string
 	CoinCount int32
 	Status    int64
@@ -40,4 +42,9 @@ type UserUseCase interface {
 	GetOne(ID int64) (UserResponse, error)
 	Block(ID int64) error
 	UnBlock(ID int64) error
+	ChangeStatus(ID int64, status UserStatus) error
+}
+
+type UserRepository interface {
+	Save(user *User) (int64, error)
 }
