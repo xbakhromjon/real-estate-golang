@@ -8,7 +8,7 @@ import (
 	"real-estate/usecase"
 )
 
-func NewUserRouter(group *gin.RouterGroup, db gorm.DB) {
+func NewUserRouter(group *gin.RouterGroup, db *gorm.DB) {
 	uc := controller.UserController{UserUseCase: usecase.NewUserUseCase(repository.NewUserRepository(db))}
 	group.GET("/users/:id", uc.GetOne)
 	group.POST("/users", uc.Create)

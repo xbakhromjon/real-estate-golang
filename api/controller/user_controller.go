@@ -37,7 +37,11 @@ func (uc *UserController) Update(context *gin.Context) {
 		fmt.Println("Error occured binding")
 	}
 	fmt.Println(request)
-	err = uc.UserUseCase.Update(request)
+	ID, err := strconv.ParseInt(id, 10, 64)
+	if err != nil {
+		panic("converting error")
+	}
+	err = uc.UserUseCase.Update(ID, &request)
 	if err != nil {
 		fmt.Println("Error processing")
 	}
@@ -46,7 +50,15 @@ func (uc *UserController) Update(context *gin.Context) {
 
 func (uc *UserController) GetOne(context *gin.Context) {
 	id := context.Params.ByName("id")
-	fmt.Println(id)
+	ID, err := strconv.ParseInt(id, 10, 64)
+	if err != nil {
+		panic("error convert")
+	}
+	user, err := uc.UserUseCase.GetOne(ID)
+	if err != nil {
+		panic("error")
+	}
+	context.JSON(http.StatusOK, user)
 }
 
 func (uc *UserController) Block(context *gin.Context) {
@@ -64,6 +76,8 @@ func (uc *UserController) ChangeStatus(context *gin.Context) {
 		fmt.Println("query status required")
 		return
 	}
-	fmt.Printf("id: %s status: %s", id, status)
+	ID, _ := strconv.ParseInt(id, 10, 64)
+	convertedStatus, _ := strconv.ParseInt(status, 10, 8)
+	uc.UserUseCase.ChangeStatus(ID, domain.UserStatus(convertedStatus))
 
 }
